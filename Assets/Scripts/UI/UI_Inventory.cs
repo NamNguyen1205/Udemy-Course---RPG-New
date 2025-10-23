@@ -7,12 +7,12 @@ public class UI_Inventory : MonoBehaviour
     private UI_ItemSlot[] uiItemSlots;
     private UI_EquipSlot[] uiEquipSlots;
 
-    [SerializeField] private Transform uiItemSlotParent;
+    [SerializeField] private UI_ItemSlotParent invetorySlotsParent;
     [SerializeField] private Transform uiEquipSlotParent;
 
     private void Awake()
     {
-        uiItemSlots = uiItemSlotParent.GetComponentsInChildren<UI_ItemSlot>();
+        
         uiEquipSlots = uiEquipSlotParent.GetComponentsInChildren<UI_EquipSlot>();
 
         inventory = FindFirstObjectByType<Inventory_Player>();
@@ -23,7 +23,7 @@ public class UI_Inventory : MonoBehaviour
 
     private void UpdateUI()
     {
-        UpdateInventorySlots();
+        invetorySlotsParent.UpdateSlots(inventory.itemList);
         UpdateEquipmentSlots();
     }
 
@@ -43,23 +43,7 @@ public class UI_Inventory : MonoBehaviour
     }
 
 
-    private void UpdateInventorySlots()
-    {
-        List<Inventory_Item> itemsList = inventory.itemList;
-
-        for (int i = 0; i < uiItemSlots.Length; i++)
-        {
-            if (i < itemsList.Count)
-            {
-                uiItemSlots[i].UpdateSlot(itemsList[i]);
-            }
-            else
-            {
-                uiItemSlots[i].UpdateSlot(null);
-            }
-
-        }
-    }
+    
 
   
 }
