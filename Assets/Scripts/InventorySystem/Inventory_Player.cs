@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Inventory_Player : Inventory_Base
 {
+    public int gold = 10000;
     private Player player;
     public List<Inventory_EquipmentSlot> equipList;
     public Inventory_Storage storage{ get; private set; }
@@ -16,7 +17,7 @@ public class Inventory_Player : Inventory_Base
 
     public void TryEquipItem(Inventory_Item item)
     {
-        var inventoryItem = FindItem(item.itemData);
+        var inventoryItem = FindItem(item);
         var matchingSlots = equipList.FindAll(slot => slot.slotType == item.itemData.itemType);
 
         // STEP 1 : Try to find empty slot and equip item
@@ -49,9 +50,9 @@ public class Inventory_Player : Inventory_Base
         RemoveOneItem(itemToEquip);
     }
 
-    public void UnequipItem(Inventory_Item itemToUnequip,bool replacingItem = false)
+    public void UnequipItem(Inventory_Item itemToUnequip, bool replacingItem = false)
     {
-        if (CanAddItem(itemToUnequip) == false)
+        if (CanAddItem(itemToUnequip) == false && replacingItem == false)
         {
             Debug.Log("No space!");
             return;

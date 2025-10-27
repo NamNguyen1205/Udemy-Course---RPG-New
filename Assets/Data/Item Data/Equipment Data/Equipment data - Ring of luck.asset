@@ -15,8 +15,8 @@ MonoBehaviour:
   itemPrice: 100
   minStackSizeAtShop: 1
   maxStackSizeAtShop: 1
-  itemRarity: 839
-  dropChance: 16.2
+  itemRarity: 649
+  dropChance: 35.2
   maxDropChance: 65
   craftRecipe: []
   itemName: Ring of luck

@@ -15,9 +15,9 @@ MonoBehaviour:
   itemPrice: 100
   minStackSizeAtShop: 1
   maxStackSizeAtShop: 5
-  itemRarity: 126
-  dropChance: 77.4
-  maxDropChance: 77.4
+  itemRarity: 225
+  dropChance: 65
+  maxDropChance: 65
   craftRecipe: []
   itemName: Small Potion
   itemIcon: {fileID: 1313642841, guid: 7ae0115109b4a6f42a4f7ad59397d09b, type: 3}
