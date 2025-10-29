@@ -13,6 +13,7 @@ public class Entity_Health : MonoBehaviour, IDamageable
     private Entity_Stats entityStats;
     private Entity_DropManager dropManager;
 
+    private bool miniHealthBarActive; 
     [SerializeField] protected float currentHealth;
     [Header("Health regen")]
     [SerializeField] private float regenInterval = 1;
@@ -141,11 +142,13 @@ public class Entity_Health : MonoBehaviour, IDamageable
     public float GetCurrentHealth() => currentHealth;
     private void UpdateHealthBar()
     {
-        if (healthBar == null)
+        if (healthBar == null && healthBar.transform.parent.gameObject.activeSelf == false)
             return;
 
         healthBar.value = currentHealth / entityStats.GetMaxHealth();
     }
+
+    public void EnableHealthBar(bool enable) => healthBar?.transform.parent.gameObject.SetActive(enable);
 
 
     private void TakeKnockback(Transform damageDealer, float finalDamage)
