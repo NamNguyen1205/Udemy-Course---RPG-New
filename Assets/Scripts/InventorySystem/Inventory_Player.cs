@@ -91,7 +91,7 @@ public class Inventory_Player : Inventory_Base
         float savedHealthPercent = player.health.GetHealthPercent();
         var slotToUnequip = equipList.Find(slot => slot.equipedItem == itemToUnequip);
 
-        if(slotToUnequip != null)
+        if (slotToUnequip != null)
             slotToUnequip.equipedItem = null;
 
         itemToUnequip.RemoveModifiers(player.stats);
@@ -99,5 +99,15 @@ public class Inventory_Player : Inventory_Base
 
         player.health.SetHealthToPercent(savedHealthPercent);
         AddItem(itemToUnequip);
+    }
+
+    public override void SaveData(ref GameData data)
+    {
+        data.gold = gold;
+    }
+
+    public override void LoadData(GameData data)
+    {
+        gold = data.gold;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
-public class Inventory_Base : MonoBehaviour
+public class Inventory_Base : MonoBehaviour, ISaveable
 {
     protected Player player;
     public event Action OnInventoryChange;
@@ -43,15 +43,7 @@ public class Inventory_Base : MonoBehaviour
     } 
     public Inventory_Item FindStackable(Inventory_Item itemToAdd)
     {
-        List<Inventory_Item> stackableItems = itemList.FindAll(item => item.itemData == itemToAdd.itemData);
-
-        foreach (var stackableItem in stackableItems)
-        {
-            if (stackableItem.CanAddStack())
-                return stackableItem;
-        }
-
-        return null;
+        return itemList.Find(item => item.itemData == itemToAdd.itemData && item.CanAddStack());
     }
 
     public void AddItem(Inventory_Item itemToAdd)
@@ -97,4 +89,14 @@ public class Inventory_Base : MonoBehaviour
     }
 
     public void TriggerUpdateUI() => OnInventoryChange?.Invoke();
+
+    public virtual void LoadData(GameData data)
+    {
+        
+    }
+
+    public virtual void SaveData(ref GameData data)
+    {
+        
+    }
 }
