@@ -19,7 +19,7 @@ public class Inventory_Item
     public Inventory_Item(ItemDataSO itemData)
     {
         this.itemData = itemData;
-        itemEffect = itemData.itemEffect;
+        this.itemEffect = itemData.itemEffect;
         buyPrice = itemData.itemPrice;
         sellPrice = itemData.itemPrice * 0.35f;
 
