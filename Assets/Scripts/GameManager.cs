@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, ISaveable
 {
     public static GameManager instance;
-    private Vector3 lastDeathPostion;
+    private Vector3 lastPlayerPosition;
+
+    private string lastScenePlayed;
+    private bool dataLoaded;
 
     private void Awake()
     {
@@ -22,30 +26,55 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetLastDeathPosition(Vector3 position) => lastDeathPostion = position;
+    // public void SetLastPlayerPosition(Vector3 position) => lastPlayerPosition = position;
+
+    public void ContinuePlay()
+    {
+        ChangeScene(lastScenePlayed, RespawnType.NonSpecific);
+    }
 
     public void RestartScene()
     {
-        SaveManager.instance.SaveGame();
 
         string sceneName = SceneManager.GetActiveScene().name;
-        ChangeScene(sceneName, RespawnType.None);
+        ChangeScene(sceneName, RespawnType.NonSpecific);
     }
 
     public void ChangeScene(string sceneName, RespawnType respawnType)
     {
+        SaveManager.instance.SaveGame();
+        
+        Time.timeScale = 1;
         StartCoroutine(ChangeSceneCo(sceneName, respawnType));
     }
 
     private IEnumerator ChangeSceneCo(string sceneName, RespawnType respawnType)
     {
-        //fade effect
+        UI_FadeScreen fadeScreen = FindFadeScreenUI();
 
-        yield return new WaitForSeconds(1f);
+        fadeScreen.DoFadeOut();
+
+        yield return fadeScreen.fadeEffectCo;
 
         SceneManager.LoadScene(sceneName);
 
-        yield return new WaitForSeconds(0.2f);
+        dataLoaded = false;
+        yield return null;
+
+        while (dataLoaded == false)
+        {
+            yield return null;
+        }
+
+        fadeScreen = FindFadeScreenUI();
+        fadeScreen.DoFadeIn();
+
+        // yield return new WaitForSeconds(1);
+
+        Player player = Player.instance;
+
+        if (player == null)
+            yield break;
 
         Vector3 position = GetNewPlayerPosition(respawnType);
 
@@ -53,10 +82,30 @@ public class GameManager : MonoBehaviour
             Player.instance.TeleportPlayer(position);
 
     }
+    
+    private UI_FadeScreen FindFadeScreenUI()
+    {
+        if (UI.instance != null)
+            return UI.instance.fadeScreenUI;
+        else
+            return FindFirstObjectByType<UI_FadeScreen>();
+    }
 
     private Vector3 GetNewPlayerPosition(RespawnType type)
     {
-        if (type == RespawnType.None)
+        if (type == RespawnType.Portal)
+        {
+            Object_Portal portal = Object_Portal.instance;
+
+            Vector3 position = portal.GetPosition();
+
+            portal.SetTrigger(false);
+            portal.DisableIfNeeded();
+
+            return position;
+        }
+        
+        if (type == RespawnType.NonSpecific)
         {
             var data = SaveManager.instance.GetGameData();
             var checkpoints = FindObjectsByType<Object_CheckPoint>(FindObjectsSortMode.None);
@@ -75,7 +124,7 @@ public class GameManager : MonoBehaviour
             if (selectedPositions.Count == 0)
                 return Vector3.zero;
 
-            return selectedPositions.OrderBy(position => Vector3.Distance(position, lastDeathPostion)).First();
+            return selectedPositions.OrderBy(position => Vector3.Distance(position, lastPlayerPosition)).First();
         }
 
         return GetWaypointPosition(type);
@@ -93,5 +142,28 @@ public class GameManager : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    public void LoadData(GameData data)
+    {
+        lastScenePlayed = data.lastScenePlayed;
+        lastPlayerPosition = data.lastPlayerPosition;
+
+        if (string.IsNullOrEmpty(lastScenePlayed))
+            lastScenePlayed = "Level_0";
+
+        dataLoaded = true;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene == "MainMenu")
+            return;
+
+        data.lastPlayerPosition = Player.instance.transform.position;
+        data.lastScenePlayed = currentScene;
+        dataLoaded = false;
     }
 }
