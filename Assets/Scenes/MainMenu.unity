@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1895,7 +1895,7 @@ GameObject:
   - component: {fileID: 755065828}
   - component: {fileID: 755065829}
   m_Layer: 5
-  m_Name: BGM_Volume
+  m_Name: BGM_Volume - Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1967,13 +1967,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 266570639}
   m_HandleRect: {fileID: 171015598}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.588
+  m_Value: 0.6
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1885146944}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: BGMSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &975135307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,7 +2784,7 @@ GameObject:
   - component: {fileID: 1179329000}
   - component: {fileID: 1179329001}
   m_Layer: 5
-  m_Name: SFX_Volume
+  m_Name: SFX_Volume - Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2844,13 +2856,25 @@ MonoBehaviour:
   m_FillRect: {fileID: 1564932807}
   m_HandleRect: {fileID: 1050313433}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.588
+  m_Value: 0.6
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1885146944}
+        m_TargetAssemblyTypeName: UI_Options, Assembly-CSharp
+        m_MethodName: SFXSliderValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1196165224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,6 +3019,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2712638734468210010, guid: 2525b35adc1dcd2409a7b18c418ea69a, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 3297971882327623480, guid: 35b670a3c25fc1b4fa6d2c452872d7bf, type: 2}
+    - target: {fileID: 5236952674280309600, guid: 2525b35adc1dcd2409a7b18c418ea69a, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -4630124125421593790, guid: 35b670a3c25fc1b4fa6d2c452872d7bf, type: 2}
     - target: {fileID: 5372952312513075995, guid: 2525b35adc1dcd2409a7b18c418ea69a, type: 3}
       propertyPath: m_Name
       value: ___AUDIO MANAGER___
@@ -4520,6 +4552,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarToggle: {fileID: 1738251630}
+  audioMixer: {fileID: 24100000, guid: 35b670a3c25fc1b4fa6d2c452872d7bf, type: 2}
+  mixerMultiplier: 25
+  bgmSlider: {fileID: 755065829}
+  bgmParametr: bgmMixer
+  sfxSlider: {fileID: 1179329001}
+  sfxPamametr: sfxMixer
 --- !u!1 &1925645677
 GameObject:
   m_ObjectHideFlags: 0
